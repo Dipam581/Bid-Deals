@@ -1,0 +1,45 @@
+from django.shortcuts import render, HttpResponse, redirect
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+from django.core.mail import BadHeaderError, send_mail
+from django.http import HttpResponse, HttpResponseRedirect
+
+
+
+def initiate_login(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        user_obj = User.objects.get(username=email)
+        user = authenticate(username=email, password=password)
+        context = {
+            "fullName": user_obj.first_name + " " + user_obj.last_name,
+            "uuid": user_obj.customuser.unique_key
+        }
+        if user is not None:
+            return redirect("add_product_for_bid")
+        else:
+           return HttpResponse("Sorry... You Are Not Authenticated.")
+
+    return render(request, 'welcome.html')
+
+def register(request):
+    if request.method == "POST":
+        username = request.POST.get("name")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        try:
+            user = User.objects.create_user(email, password=password, first_name= username.split(" ")[0], last_name= username.split(" ")[1])
+            user.save()
+            subject = "User Creation Successful"
+            message = f"Dear {username.split(" ")[0]}, You have successfully registered. Your login_id = {email} and password = {password}"
+            from_email = "rohansaha9477@gmail.com"
+            if subject and message and from_email:
+                # send_mail(subject, message, from_email, [email], fail_silently= True)
+                return redirect('initiate_login')
+            else:
+                return HttpResponse("Make sure all fields are entered and valid.")
+        except Exception as e:
+            return HttpResponse(e)
+    
+    return render(request, 'register.html')
