@@ -17,6 +17,13 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -41,6 +48,7 @@ INSTALLED_APPS = [
 
     'Login',
     "Bid",
+    "cloudinary",
 ]
 
 MIDDLEWARE = [
@@ -137,7 +145,18 @@ STATIC_URL = 'static/'
 MEDIA_URL = "/media/"
 MEDIA_ROOT=os.path.join(BASE_DIR,"media/")
 
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR,"static/"),
+)
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+cloudinary.config( 
+    cloud_name = "dvkwhr1bx", 
+    api_key = "839791265795498", 
+    api_secret = "mristT0hxVZwjbYr-jvdg6pudlE",
+) 
