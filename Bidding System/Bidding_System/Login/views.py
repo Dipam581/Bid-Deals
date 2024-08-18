@@ -17,7 +17,7 @@ def initiate_login(request):
             "uuid": str(user_obj.customuser.unique_key)
         }
         if user is not None:
-            return redirect("add_product_for_bid")
+            return redirect("option_of_trading")
             
         else:
            return HttpResponse("Sorry... You Are Not Authenticated.")

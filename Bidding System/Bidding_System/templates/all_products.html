@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class='container mx-auto p-5' id="welcome">
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-4">
+                <span style="font-family: serif; font-size: 35px; color: brown;">Welcome to the</span>
+                <span
+                    style="font-family: serif; font-size: 45px; color: coral; text-shadow: 0 0 #1d5fc1;">TradeSquare</span>
+            </div>
+
+            <div class="container">
+                <h3 style="font-family: serif; color: darkgreen;">The list of all of your listed items...</h3>
+                <br>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Product Description</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in listed_obj %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.description }}</td>
+                            <td>{{ product.price }}</td>
+                            <td>
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}"
+                                    style="width: 100px; height: 100px;">
+                            </td>
+                            <td><a class="btn btn-warning" href="#" role="button">Want to Buy</a></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5">No products found for this owner.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

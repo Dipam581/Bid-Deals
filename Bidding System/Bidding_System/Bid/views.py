@@ -3,6 +3,10 @@ import random
 from .models import creationData
 
 
+def option_of_trading(request):
+    return render(request, 'option.html')
+
+
 def add_product_for_bid(request):
     context = request.session.get('context', {})
     print(context["uuid"])
@@ -20,3 +24,10 @@ def add_product_for_bid(request):
         print("--> ",owner_data)
 
     return render(request, 'bid_creation.html', {'userContext': context["fullName"], 'ownerData': owner_data})
+
+
+#Show all products
+def show_all_products(request):
+    listed_obj = creationData.objects.all()
+
+    return render(request, 'all_products.html',{"listed_obj": listed_obj})
