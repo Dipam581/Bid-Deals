@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 import random
 from .models import creationData
 
@@ -29,5 +29,14 @@ def add_product_for_bid(request):
 #Show all products
 def show_all_products(request):
     listed_obj = creationData.objects.all()
-
     return render(request, 'all_products.html',{"listed_obj": listed_obj})
+
+
+# process to buy
+def buy_product(request, product_id):
+    product = creationData.objects.filter(product_id=product_id)
+    context = request.session.get('context', {})
+    userContext = {
+        "email": context["email"]
+    }
+    return render(request,"buy_screen.html", {"selectedData": product, "userContext": userContext})

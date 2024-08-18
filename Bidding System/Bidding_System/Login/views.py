@@ -14,6 +14,7 @@ def initiate_login(request):
         user = authenticate(username=email, password=password)
         request.session['context'] = {
             "fullName": user_obj.first_name + " " + user_obj.last_name,
+            "email": user_obj.username,
             "uuid": str(user_obj.customuser.unique_key)
         }
         if user is not None:
