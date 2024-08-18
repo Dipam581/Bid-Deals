@@ -12,12 +12,13 @@ def initiate_login(request):
         password = request.POST.get("password")
         user_obj = User.objects.get(username=email)
         user = authenticate(username=email, password=password)
-        context = {
+        request.session['context'] = {
             "fullName": user_obj.first_name + " " + user_obj.last_name,
-            "uuid": user_obj.customuser.unique_key
+            "uuid": str(user_obj.customuser.unique_key)
         }
         if user is not None:
             return redirect("add_product_for_bid")
+            
         else:
            return HttpResponse("Sorry... You Are Not Authenticated.")
 

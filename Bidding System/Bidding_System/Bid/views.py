@@ -4,13 +4,19 @@ from .models import creationData
 
 
 def add_product_for_bid(request):
+    context = request.session.get('context', {})
+    print(context["uuid"])
     if request.method == "POST":
         item_name = request.POST.get("item")
         item_description = request.POST.get("description")
         item_amount = request.POST.get("amount")
         file = request._files['file']
-        bidData = creationData(owner_id= random.random(),name= item_name,price= item_amount,description= item_description, image = file)
+        bidData = creationData(owner_id= context["uuid"], name= item_name, price= item_amount, description= item_description, image = file)
         bidData.save()
-        
-        # return render(request, 'bid_creation.html')
-    return render(request, 'bid_creation.html')
+    
+    owner_data = {}
+    if (len(creationData.objects.filter(owner_id= context["uuid"]))):
+        owner_data = creationData.objects.filter(owner_id= context["uuid"])
+        print("--> ",owner_data)
+
+    return render(request, 'bid_creation.html', {'userContext': context["fullName"], 'ownerData': owner_data})
