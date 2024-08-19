@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 import random
-from .models import creationData
+from .models import creationData, BuyModel
 from .utils import send_mail
 
 def option_of_trading(request):
@@ -38,6 +38,16 @@ def show_all_products(request):
     
 # process to buy
 def buy_product(request, product_id):
+    if request.method == "POST":
+        context = request.session.get('context', {})
+        owner_id = creationData.objects.filter(product_id = product_id)[0]
+        current_price = request.POST.get("proposedPrice")
+        updated_price = request.POST.get("updatedPrice")
+        print(owner_id," ", current_price, " ", updated_price)
+        buyModel = BuyModel(owner_id = owner_id, bider_id = context["uuid"], original_price = current_price, updated_price = updated_price)
+        buyModel.save()
+
+
     product = creationData.objects.filter(product_id=product_id)
     context = request.session.get('context', {})
     userContext = {

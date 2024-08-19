@@ -1,6 +1,5 @@
 import uuid
 from django.db import models
-from cloudinary.models import CloudinaryField
 
 # Create your models here.
 class creationData(models.Model):
@@ -13,3 +12,14 @@ class creationData(models.Model):
 
     def __str__(self):
         return self.owner_id
+    
+
+class BuyModel(models.Model):
+    order_id = models.UUIDField(default=uuid.uuid4, unique=True, editable=False, primary_key=True)
+    owner_id = models. CharField(default="")
+    bider_id = models. CharField(default="")
+    original_price = models.FloatField(default=0.0)
+    updated_price = models.FloatField(default=0.0)
+    
+    def __str__(self):
+        return self.order_id
