@@ -63,12 +63,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'Bidding_System.urls'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'dipamghosh581@gmail.com'
-EMAIL_HOST_PASSWORD = 'uwyabufmykfskvil'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'dipamghosh581@gmail.com'
+# EMAIL_HOST_PASSWORD = 'uwyabufmykfskvil'
 # EMAIL_USE_SSL = False
 
 
@@ -160,3 +160,11 @@ cloudinary.config(
     api_key = "839791265795498", 
     api_secret = "mristT0hxVZwjbYr-jvdg6pudlE",
 ) 
+
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "dipam.ghosh92@gmail.com"
+EMAIL_HOST_PASSWORD = "wofgfnosrspilesn"

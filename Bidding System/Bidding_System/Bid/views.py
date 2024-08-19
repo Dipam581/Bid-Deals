@@ -1,11 +1,15 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 import random
 from .models import creationData
-
+from .utils import send_mail
 
 def option_of_trading(request):
     return render(request, 'option.html')
 
+
+def send_mail_Test(request):
+    send_mail()
+    return redirect("/option")
 
 def add_product_for_bid(request):
     context = request.session.get('context', {})
@@ -31,7 +35,7 @@ def show_all_products(request):
     listed_obj = creationData.objects.all()
     return render(request, 'all_products.html',{"listed_obj": listed_obj})
 
-
+    
 # process to buy
 def buy_product(request, product_id):
     product = creationData.objects.filter(product_id=product_id)
