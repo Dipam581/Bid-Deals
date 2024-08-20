@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 import random
 from .models import creationData, BuyModel
 from .utils import send_mail
+from Login.models import CustomUser
+from django.contrib.auth.models import User
 
 def option_of_trading(request):
     return render(request, 'option.html')
@@ -40,12 +42,20 @@ def show_all_products(request):
 def buy_product(request, product_id):
     if request.method == "POST":
         context = request.session.get('context', {})
-        owner_id = creationData.objects.filter(product_id = product_id)[0]
-        current_price = request.POST.get("proposedPrice")
+        productDetails = creationData.objects.filter(product_id = product_id)
+        owner_id = productDetails[0].owner_id
+        current_price = productDetails[0].price
         updated_price = request.POST.get("updatedPrice")
         print(owner_id," ", current_price, " ", updated_price)
-        buyModel = BuyModel(owner_id = owner_id, bider_id = context["uuid"], original_price = current_price, updated_price = updated_price)
-        buyModel.save()
+        # buyModel = BuyModel(owner_id = str(owner_id), bider_id = context["uuid"], original_price = current_price, updated_price = updated_price)
+        # buyModel.save()
+
+        owner_mail = CustomUser.objects.filter(unique_key=owner_id)[0]
+        name = User.objects.get(username= owner_mail).first_name
+        msg = f"Hi {name}, You have a sell request from a buyer. Please visit TradeSquare."
+        
+        print(msg," ", owner_mail, " - ", name)
+        send_mail(msg, owner_mail)
 
 
     product = creationData.objects.filter(product_id=product_id)
