@@ -53,8 +53,7 @@ def buy_product(request, product_id):
         owner_mail = CustomUser.objects.filter(unique_key=owner_id)[0]
         name = User.objects.get(username= owner_mail).first_name
         msg = f"Hi {name}, You have a sell request from a buyer. Please visit TradeSquare."
-        
-        print(msg," ", owner_mail, " - ", name)
+
         send_mail(msg, owner_mail)
 
 
