@@ -13,6 +13,15 @@ def send_mail_Test(request):
     send_mail()
     return redirect("/option")
 
+def notification(request):
+    # if request.method == "POST":
+    context = request.session.get('context', {})
+    notify_data = BuyModel.objects.filter(owner_id = context["uuid"])
+    name = User.objects.get(username= CustomUser.objects.filter(unique_key=context["uuid"])[0]).first_name
+    print(name)
+
+    return render(request, 'notification.html',{"notify_data" : notify_data})
+
 def add_product_for_bid(request):
     context = request.session.get('context', {})
     print(context["uuid"])
