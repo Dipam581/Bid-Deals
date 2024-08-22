@@ -13,10 +13,17 @@
     <div class='container mx-auto p-5' id="welcome">
         <form method="post">
             {% csrf_token %}
-            <div class="mb-4">
+            <div class="mb-2" style="margin-left: 20rem;">
                 <span style="font-family: serif; font-size: 35px; color: brown;">Welcome to the</span>
                 <span
                     style="font-family: serif; font-size: 45px; color: coral; text-shadow: 0 0 #1d5fc1;">TradeSquare</span>
+            </div>
+
+            <div class="mb-2" style="margin-left: 20rem;">
+                <a href=""
+                    style="font-family: serif;font-size: 20px;font-weight: 600;color: rgb(9 190 247);float: right;border-radius: 6px;background-color: #cdf106;"
+                    class="border p-1">Wishlist</a>
+
             </div>
 
             <div class="container">
@@ -45,15 +52,16 @@
                                 <img src="{{ product.image.url }}" alt="{{ product.name }}"
                                     style="width: 100px; height: 100px;">
                             </td>
-                            <td><a class="btn btn-warning" href="{% url 'buy_product' product.product_id %}" role="button">Want to Buy</a></td>
+                            <td><a class="btn btn-warning" href="{% url 'buy_product' product.product_id %}"
+                                    role="button">Want to Buy</a></td>
                             <td>
-                                <button type="button" class="btn btn-primary">
+                                <a href="{% url 'added_wishlist' product.product_id %}" class="btn btn-primary" id="wishlist">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-heart" viewBox="0 0 16 16">
                                         <path
                                             d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
                                     </svg>
-                                </button>
+                                </a>
                             </td>
                         </tr>
                         {% empty %}

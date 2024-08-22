@@ -1,9 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
-import random
-from .models import creationData, BuyModel
+from .models import creationData, BuyModel, NotifyAndWishlistModel
 from .utils import send_mail
 from Login.models import CustomUser
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 def option_of_trading(request):
     return render(request, 'option.html')
@@ -72,3 +72,20 @@ def buy_product(request, product_id):
         "email": context["email"]
     }
     return render(request,"buy_screen.html", {"selectedData": product, "userContext": userContext})
+
+
+def added_wishlist(request,product_id):
+    
+    context = request.session.get('context', {})
+    productDetails = creationData.objects.filter(product_id = product_id)
+    owner_id = productDetails[0].owner_id
+    verify_data = NotifyAndWishlistModel.objects.filter(product_id = product_id, bider_id = context["uuid"])
+    
+    if(not verify_data[0].isWishlisted):
+        notify_wish_Model = NotifyAndWishlistModel(product_id = product_id, owner_id = str(owner_id), bider_id = context["uuid"], isWishlisted = True)
+        notify_wish_Model.save()
+    else:
+        print("Already wishlisted")
+        pass
+
+    return redirect("/deals")

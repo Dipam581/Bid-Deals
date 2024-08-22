@@ -20,6 +20,17 @@ class BuyModel(models.Model):
     bider_id = models. CharField(default="")
     original_price = models.FloatField(default=0.0)
     updated_price = models.FloatField(default=0.0)
+    # isWishlisted = models.BooleanField(default= False)
     
     def __str__(self):
         return self.order_id
+
+
+class NotifyAndWishlistModel(models.Model):
+    product_id = models.CharField(default="")
+    owner_id = models. CharField(default="")
+    bider_id = models. CharField(default="")
+    isWishlisted = models.BooleanField(default= False)
+    
+    def __str__(self):
+        return (self.product_id+" "+ str(self.isWishlisted))
