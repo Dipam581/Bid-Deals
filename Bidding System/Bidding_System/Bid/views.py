@@ -14,25 +14,28 @@ def send_mail_Test(request):
     send_mail()
     return redirect("/option")
 
-def notification(request):
+def wishlist(request):
     if request.method == "POST":
         product_id = request.POST.get('product_id')
-        print("product_id", product_id)
-        # NotifyAndWishlistModel.objects.filter(bider_id = context["uuid"]).delete()
+        try:
+            NotifyAndWishlistModel.objects.filter(product_id = product_id).delete()
+            messages.info(request, "This product is removed from your wishlist")
+        except:
+            print("Error Occured")
+
     context = request.session.get('context', {})
     html_object = []
     notify_data = NotifyAndWishlistModel.objects.filter(bider_id = context["uuid"])
     for no in notify_data:
         product_details = creationData.objects.filter(product_id = no.product_id)
         temp_obj = {
-            "id": product_details[0].product_id,
+            "id": str(product_details[0].product_id),
             "name": product_details[0].name,
             "desc": product_details[0].description,
             "image": product_details[0].image
         }
         html_object.append(temp_obj)
-        print(html_object)
-    return render(request, 'notification.html',{"html_object" : html_object})
+    return render(request, 'wishlist.html',{"html_object" : html_object})
 
 
 def add_product_for_bid(request):

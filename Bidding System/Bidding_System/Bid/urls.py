@@ -9,6 +9,6 @@ urlpatterns = [
     path('deals/', show_all_products, name="show_all_products"),
     path('buy_product/<str:product_id>/', buy_product, name="buy_product"),
     path('send_mail/', send_mail_Test, name='send_mail_Test'),
-    path('addBid/notification/', notification, name='notification'),
+    path('deals/notification/', wishlist, name='wishlist'),
     path('deals/wishlist/<str:product_id>/', added_wishlist, name="added_wishlist"),
 ]
