@@ -15,19 +15,25 @@ def send_mail_Test(request):
     return redirect("/option")
 
 def notification(request):
-    # if request.method == "POST":
+    if request.method == "POST":
+        product_id = request.POST.get('product_id')
+        print("product_id", product_id)
+        # NotifyAndWishlistModel.objects.filter(bider_id = context["uuid"]).delete()
     context = request.session.get('context', {})
     html_object = []
     notify_data = NotifyAndWishlistModel.objects.filter(bider_id = context["uuid"])
     for no in notify_data:
         product_details = creationData.objects.filter(product_id = no.product_id)
         temp_obj = {
+            "id": product_details[0].product_id,
             "name": product_details[0].name,
             "desc": product_details[0].description,
             "image": product_details[0].image
         }
         html_object.append(temp_obj)
+        print(html_object)
     return render(request, 'notification.html',{"html_object" : html_object})
+
 
 def add_product_for_bid(request):
     context = request.session.get('context', {})
