@@ -59,7 +59,8 @@ def add_product_for_bid(request):
 
 #Show all products
 def show_all_products(request):
-    listed_obj = creationData.objects.all()
+    context = request.session.get('context', {})
+    listed_obj = creationData.objects.filter(~Q(owner_id=context["uuid"]))
     return render(request, 'all_products.html',{"listed_obj": listed_obj})
 
     

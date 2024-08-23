@@ -46,27 +46,27 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Product Name</th>
-                            <th scope="col">Product Description</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Image</th>
-                            <th scope="col">Action</th>
-                            <th scope="col">My Cart</th>
+                            <th scope="col" style="font-family: serif; font-size: 20px;">Sl. No.</th>
+                            <th scope="col" style="font-family: serif; font-size: 20px;">Product Name</th>
+                            <th scope="col" style="font-family: serif; font-size: 20px;">Product Description</th>
+                            <th scope="col" style="font-family: serif; font-size: 20px;">Price</th>
+                            <th scope="col" style="font-family: serif; font-size: 20px;">Image</th>
+                            <th scope="col" style="font-family: serif; font-size: 20px;">Action</th>
+                            <th scope="col" style="font-family: serif; font-size: 20px;">My Cart</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for product in listed_obj %}
                         <tr>
                             <th scope="row">{{ forloop.counter }}</th>
-                            <td>{{ product.name }}</td>
-                            <td>{{ product.description }}</td>
-                            <td>{{ product.price }}</td>
+                            <td style="font-family: serif;font-size: 18px;">{{ product.name }}</td>
+                            <td style="font-family: serif;font-size: 18px;">{{ product.description }}</td>
+                            <td style="font-family: serif;font-size: 18px;">{{ product.price }}</td>
                             <td>
                                 <img src="{{ product.image.url }}" alt="{{ product.name }}"
                                     style="width: 100px; height: 100px;">
                             </td>
-                            <td><a class="btn btn-warning" href="{% url 'buy_product' product.product_id %}"
+                            <td style="font-family: serif;font-size: 18px;"><a class="btn btn-warning" style="transition: background-color 0.3s ease;" href="{% url 'buy_product' product.product_id %}"
                                     role="button">Want to Buy</a></td>
                             <td>
                                 <a href="{% url 'added_wishlist' product.product_id %}" class="btn btn-primary"
