@@ -13,14 +13,14 @@
     <div class='container mx-auto p-5' id="welcome">
         <form method="post">
             {% csrf_token %}
-            <div class="mb-2" style="margin-left: 20rem;">
+            <div class="mb-2" style="margin-left: 18rem;">
                 <span style="font-family: serif; font-size: 35px; color: brown;">Welcome to the</span>
                 <span
                     style="font-family: serif; font-size: 45px; color: coral; text-shadow: 0 0 #1d5fc1;">TradeSquare</span>
             </div>
 
-            <div class="mb-2" style="margin-left: 20rem;">
-                <a href=""
+            <div class="mb-2 mr-3" style="margin-left: 20rem;">
+                <a href="{% url 'notification' %}"
                     style="font-family: serif;font-size: 20px;font-weight: 600;color: rgb(9 190 247);float: right;border-radius: 6px;background-color: #cdf106;"
                     class="border p-1">Wishlist</a>
 
@@ -28,7 +28,21 @@
 
             <div class="container">
                 <h3 style="font-family: serif; color: darkgreen;">The list of all of your listed items...</h3>
-                <br>
+
+                {% if messages %}
+                <ul class="messages msg">
+                    {% for message in messages %}
+                    <h4{% if message.tags %} class="{{ message.tags }} {% if message.tags == 'success' %} shadow-lg {% endif %}" style="font-family: serif; font-size: 20px; float: inline-end;
+    {% if message.tags == 'info' %}
+        color: orangered;
+        background-color: antiquewhite;
+    {% else %}
+        color: green;
+    {% endif %}" {% endif %}>{{ message }}</h4>
+
+                        {% endfor %}
+                </ul>
+                {% endif %}
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -55,7 +69,8 @@
                             <td><a class="btn btn-warning" href="{% url 'buy_product' product.product_id %}"
                                     role="button">Want to Buy</a></td>
                             <td>
-                                <a href="{% url 'added_wishlist' product.product_id %}" class="btn btn-primary" id="wishlist">
+                                <a href="{% url 'added_wishlist' product.product_id %}" class="btn btn-primary"
+                                    id="wishlist">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-heart" viewBox="0 0 16 16">
                                         <path
@@ -75,5 +90,11 @@
         </form>
     </div>
 </body>
+
+<script>
+    setTimeout(() => {
+        document.querySelector('.msg').classList.add('d-none');
+    }, 2000)
+</script>
 
 </html>

@@ -1,4 +1,5 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from .models import creationData, BuyModel, NotifyAndWishlistModel
 from .utils import send_mail
 from Login.models import CustomUser
@@ -16,11 +17,17 @@ def send_mail_Test(request):
 def notification(request):
     # if request.method == "POST":
     context = request.session.get('context', {})
-    notify_data = BuyModel.objects.filter(owner_id = context["uuid"])
-    name = User.objects.get(username= CustomUser.objects.filter(unique_key=context["uuid"])[0]).first_name
-    print(name)
-
-    return render(request, 'notification.html',{"notify_data" : notify_data})
+    html_object = []
+    notify_data = NotifyAndWishlistModel.objects.filter(bider_id = context["uuid"])
+    for no in notify_data:
+        product_details = creationData.objects.filter(product_id = no.product_id)
+        temp_obj = {
+            "name": product_details[0].name,
+            "desc": product_details[0].description,
+            "image": product_details[0].image
+        }
+        html_object.append(temp_obj)
+    return render(request, 'notification.html',{"html_object" : html_object})
 
 def add_product_for_bid(request):
     context = request.session.get('context', {})
@@ -79,13 +86,14 @@ def added_wishlist(request,product_id):
     context = request.session.get('context', {})
     productDetails = creationData.objects.filter(product_id = product_id)
     owner_id = productDetails[0].owner_id
+    print(context["uuid"], " --", product_id)
     verify_data = NotifyAndWishlistModel.objects.filter(product_id = product_id, bider_id = context["uuid"])
     
-    if(not verify_data[0].isWishlisted):
+    if(not verify_data):
         notify_wish_Model = NotifyAndWishlistModel(product_id = product_id, owner_id = str(owner_id), bider_id = context["uuid"], isWishlisted = True)
         notify_wish_Model.save()
+        messages.success(request, "This product is added tot your wishlist")
     else:
-        print("Already wishlisted")
-        pass
+        messages.info(request, "You have already wishlisted this item")
 
     return redirect("/deals")
