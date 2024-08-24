@@ -18,7 +18,7 @@
             text-decoration: underline;
             float: inline-end;
             border-radius: 8px;
-            color: darkblue;" href="{% url 'option_of_trading' %}">Post Deal</a>
+            color: darkblue;" href="{% url 'add_product_for_bid' %}">Post Deal</a>
             <div class="mb-2" style="margin-left: 18rem;">
                 <span style="font-family: serif; font-size: 40px; color: brown;">Welcome to the: </span>
                 <span
@@ -45,7 +45,9 @@
         color: orangered;
         background-color: antiquewhite;
     {% else %}
-        color: green;
+        color: cornflowerblue;
+        font-weight: 600;
+        background-color: lemonchiffon;
     {% endif %}" {% endif %}>{{ message }}</h4>
 
                         {% endfor %}
@@ -84,7 +86,7 @@
                                         href="{% url 'buy_product' product.product_id %}" role="button">Want to Buy</a>
                                 </td>
                                 <td>
-                                    <a href="{% url 'added_wishlist' product.product_id %}" class="btn btn-primary"
+                                    <a href="{% url 'added_wishlist' product.product_id %}" class="btn btn-info"
                                         id="wishlist">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">

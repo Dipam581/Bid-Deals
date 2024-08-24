@@ -13,8 +13,21 @@
     <div class='container mx-auto p-4' id="welcome">
         <form method="post">
             {% csrf_token %}
-
-            <h2 style="font-family: serif;">Your Wishlist</h2>
+            <div class="mb-2" style="display: flex; justify-content: space-between; align-items: center;">
+                <span>
+                    <h2 style="font-family: serif; margin: 0;">Your Wishlist</h2>
+                </span>
+            
+                <span>
+                    <a class="p-1" style="
+                        font-size: large;
+                        text-decoration: underline;
+                        border-radius: 8px;
+                        color: darkblue;" href="{% url 'show_all_products' %}">
+                        View Store
+                    </a>
+                </span>
+            </div>            
 
             {% if messages %}
             <ul class="messages msg">
@@ -33,13 +46,13 @@
                     {% endfor %}
             </ul>
             {% endif %}
-            <table class="table table-striped">
+            <table class="table table-sm align-middle table-striped table-hover table-bordered border-primary">
                 <thead>
                     <tr>
-                        <th scope="col">Product Name</th>
-                        <th scope="col">Product Description</th>
-                        <th scope="col">Image</th>
-                        <th scope="col">Action</th>
+                        <th scope="col" style="font-family: serif;font-size: 20px; width: 100px;">Product Name</th>
+                        <th scope="col" style="font-family: serif;font-size: 20px; width: 300px;">Product Description</th>
+                        <th scope="col" style="font-family: serif;font-size: 20px; width: 100px;">Image</th>
+                        <th scope="col" style="font-family: serif;font-size: 20px; width: 50px;">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,7 +61,7 @@
                         <td style="font-family: serif;font-size: 20px;">{{ product.name }}</td>
                         <td style="font-family: serif;font-size: 20px;">{{ product.desc }}</td>
                         <td><img src="{{ product.image.url }}" alt="{{ product.name }}"
-                                style="width: 100px; height: 50px;"></td>
+                                style="width: fit-content; height: 100px;"></td>
                         <td>
                             <input type="hidden" name="product_id" id="product_id" value="{{ product.id }}">
                             <button type="submit" class="btn btn-outline-danger">Remove</button>
