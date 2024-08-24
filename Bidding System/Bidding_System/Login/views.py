@@ -17,6 +17,7 @@ def initiate_login(request):
             "email": user_obj.username,
             "uuid": str(user_obj.customuser.unique_key)
         }
+        print("user- ", user)
         if user is not None:
             return redirect("option_of_trading")
             

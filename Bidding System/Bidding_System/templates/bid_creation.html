@@ -10,13 +10,13 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-  <title>Deal Done</title>
+  <title>TradeSquare</title>
 </head>
 
 <body>
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <div class="container p-5">
+    <div class="container p-2 mt-2" style="background-color: khaki;">
       <div class="row">
         <span>
           <h2>Welcome {{userContext}} 😊</h2>
@@ -56,37 +56,40 @@
       <button type="submit" class="btn btn-info mt-2">Submit Bid</button>
     </div>
   </form>
-  <div class="container p-5">
+  <div class="container p-2 mt-2 mb-2" style="background-color: khaki;">
     <h3 style="font-family: serif; color: darkgreen;">The list of all of your listed items...</h3>
     <br>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Product Name</th>
-          <th scope="col">Product Description</th>
-          <th scope="col">Price</th>
-          <th scope="col">Image</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for product in ownerData %}
-        <tr>
-          <th scope="row">{{ forloop.counter }}</th>
-          <td>{{ product.name }}</td>
-          <td>{{ product.description }}</td>
-          <td>{{ product.price }}</td>
-          <td>
-            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100px; height: 100px;">
-          </td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="5">No products found for this owner.</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <div class="table-responsive" style="max-height: 720px; overflow-y: auto; background-color: lightyellow;">
+      <table class="table table-sm align-middle table-striped table-hover table-bordered border-primary">
+        <thead>
+          <tr>
+            <th scope="col" style="font-family: serif;font-size: 20px;">Sl. No.</th>
+            <th scope="col" style="font-family: serif;font-size: 20px;">Product Name</th>
+            <th scope="col" style="font-family: serif;font-size: 20px;">Product Description</th>
+            <th scope="col" style="font-family: serif;font-size: 20px;">Price</th>
+            <th scope="col" style="font-family: serif;font-size: 20px;">Image</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for product in ownerData %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td style="font-family: serif;font-size: 18px;">{{ product.name }}</td>
+            <td style="font-family: serif;font-size: 18px;">{{ product.description }}</td>
+            <td style="font-family: serif;font-size: 18px;">{{ product.price }}</td>
+            <td>
+              <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: fit-content; height: 200px;">
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5">No products found for this owner.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
   </div>
 
 

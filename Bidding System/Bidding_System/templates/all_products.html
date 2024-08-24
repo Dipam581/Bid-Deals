@@ -4,19 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>TradeSquare</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 
 <body>
-    <div class='container mx-auto p-5' id="welcome">
+    <div class='container mt-2 mb-2 p-4' id="welcome" style="background-color: khaki;">
         <form method="post">
             {% csrf_token %}
+            <a class="p-1" style="
+            font-size: large;
+            text-decoration: underline;
+            float: inline-end;
+            border-radius: 8px;
+            color: darkblue;" href="{% url 'option_of_trading' %}">Post Deal</a>
             <div class="mb-2" style="margin-left: 18rem;">
-                <span style="font-family: serif; font-size: 35px; color: brown;">Welcome to the</span>
+                <span style="font-family: serif; font-size: 40px; color: brown;">Welcome to the: </span>
                 <span
-                    style="font-family: serif; font-size: 45px; color: coral; text-shadow: 0 0 #1d5fc1;">TradeSquare</span>
+                    style="font-family: serif; font-size: xxx-large; color: coral; text-shadow: 0 0 #1d5fc1;">TradeSquare</span>
             </div>
 
             <div class="mb-2 mr-3" style="margin-left: 20rem;">
@@ -27,12 +33,14 @@
             </div>
 
             <div class="container">
-                <h3 style="font-family: serif; color: darkgreen;">The list of all of your listed items...</h3>
+                <h3 style="font-family: serif; color: darkorchid; font-size: xx-large;">Browse Our Complete Collection
+                    of Listed Items</h3>
 
                 {% if messages %}
                 <ul class="messages msg">
                     {% for message in messages %}
-                    <h4{% if message.tags %} class="{{ message.tags }} {% if message.tags == 'success' %} shadow-lg {% endif %}" style="font-family: serif; font-size: 20px; float: inline-end;
+                    <h4{% if message.tags %}
+                        class="{{ message.tags }} {% if message.tags == 'success' %} shadow-lg {% endif %}" style="font-family: serif; font-size: 20px; float: inline-end;
     {% if message.tags == 'info' %}
         color: orangered;
         background-color: antiquewhite;
@@ -43,58 +51,131 @@
                         {% endfor %}
                 </ul>
                 {% endif %}
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col" style="font-family: serif; font-size: 20px;">Sl. No.</th>
-                            <th scope="col" style="font-family: serif; font-size: 20px;">Product Name</th>
-                            <th scope="col" style="font-family: serif; font-size: 20px;">Product Description</th>
-                            <th scope="col" style="font-family: serif; font-size: 20px;">Price</th>
-                            <th scope="col" style="font-family: serif; font-size: 20px;">Image</th>
-                            <th scope="col" style="font-family: serif; font-size: 20px;">Action</th>
-                            <th scope="col" style="font-family: serif; font-size: 20px;">My Cart</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for product in listed_obj %}
-                        <tr>
-                            <th scope="row">{{ forloop.counter }}</th>
-                            <td style="font-family: serif;font-size: 18px;">{{ product.name }}</td>
-                            <td style="font-family: serif;font-size: 18px;">{{ product.description }}</td>
-                            <td style="font-family: serif;font-size: 18px;">{{ product.price }}</td>
-                            <td>
-                                <img src="{{ product.image.url }}" alt="{{ product.name }}"
-                                    style="width: 100px; height: 100px;">
-                            </td>
-                            <td style="font-family: serif;font-size: 18px;"><a class="btn btn-warning" style="transition: background-color 0.3s ease;" href="{% url 'buy_product' product.product_id %}"
-                                    role="button">Want to Buy</a></td>
-                            <td>
-                                <a href="{% url 'added_wishlist' product.product_id %}" class="btn btn-primary"
-                                    id="wishlist">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                        class="bi bi-heart" viewBox="0 0 16 16">
-                                        <path
-                                            d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
-                                    </svg>
-                                </a>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="5">No products found for this owner.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+
+                <div class="table-responsive"
+                    style="max-height: 720px; overflow-y: auto; background-color: lightyellow;">
+                    <table class="table table-sm align-middle table-striped table-hover table-bordered border-primary">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col" style="font-family: serif; font-size: 20px; width: 10px;">Sl. No.</th>
+                                <th scope="col" style="font-family: serif; font-size: 20px; width: 30px;">Product Name
+                                </th>
+                                <th scope="col" style="font-family: serif; font-size: 20px; width: 250px;">Product
+                                    Description</th>
+                                <th scope="col" style="font-family: serif; font-size: 20px; width: 40px;">Price</th>
+                                <th scope="col" style="font-family: serif; font-size: 20px; width: 50px;">Image</th>
+                                <th scope="col" style="font-family: serif; font-size: 20px; width: 100px;">Action</th>
+                                <th scope="col" style="font-family: serif; font-size: 20px; width: 30px;">My Cart</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            {% for product in listed_obj %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td style="font-family: serif;font-size: 18px;">{{ product.name }}</td>
+                                <td style="font-family: serif;font-size: 18px;">{{ product.description }}</td>
+                                <td style="font-family: serif;font-size: 18px;">{{ product.price }}</td>
+                                <td>
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}"
+                                        style="width: fit-content; height: 200px;">
+                                </td>
+                                <td style="font-family: serif;font-size: 18px;"><a class="btn btn-warning"
+                                        style="transition: background-color 0.3s ease;"
+                                        href="{% url 'buy_product' product.product_id %}" role="button">Want to Buy</a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'added_wishlist' product.product_id %}" class="btn btn-primary"
+                                        id="wishlist">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                            <path
+                                                d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+                                        </svg>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5">No products found for this owner.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
         </form>
     </div>
 </body>
+<style>
+    .table-responsive {
+        position: relative;
+    }
+
+    .table thead {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .table thead th {
+        background-color: #343a40;
+        color: white;
+        box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+    }
+
+    .table-responsive::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    .table-responsive::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background-color: #888;
+        border-radius: 14px;
+        border: 2px solid #f1f1f1;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb:hover {
+        background-color: #555;
+    }
+
+    .table-responsive {
+        scrollbar-width: thin;
+        scrollbar-color: #888 #f1f1f1;
+    }
+
+    .table-responsive {
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+
+    @keyframes slideOut {
+        0% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+
+    .msg.hide {
+        animation: slideOut 1s forwards;
+    }
+</style>
 
 <script>
-    setTimeout(() => {
-        document.querySelector('.msg').classList.add('d-none');
-    }, 2000)
+
+    document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+            document.querySelector('.msg').classList.add("hide");
+        }, 2000);
+    });
 </script>
 
 </html>
