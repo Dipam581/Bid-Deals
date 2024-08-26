@@ -67,6 +67,11 @@ def show_all_products(request):
 # process to buy
 def buy_product(request, product_id):
     if request.method == "POST":
+        button_value = request.POST.get("confirm_button")
+        if(button_value):
+            payment_and_post_buy()
+            return
+
         context = request.session.get('context', {})
         productDetails = creationData.objects.filter(product_id = product_id)
         owner_id = productDetails[0].owner_id
@@ -175,3 +180,8 @@ def view_Orders(request):
         order_object.append(temp_obj)
 
     return render(request,"order.html",{"logged_in_user_order": order_object})
+
+
+#Initiate payment and post buy stuffs
+def payment_and_post_buy():
+    pass
