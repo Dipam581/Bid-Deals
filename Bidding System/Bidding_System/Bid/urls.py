@@ -8,6 +8,7 @@ urlpatterns = [
     path('addBid/', add_product_for_bid, name="add_product_for_bid"),
     path('addBid/sell_your_product', sell_product, name="sell_product"),
     path('deals/', show_all_products, name="show_all_products"),
+    path('deals/order', view_Orders, name="view_Orders"),
     path('buy_product/<str:product_id>/', buy_product, name="buy_product"),
     path('send_mail/', send_mail_Test, name='send_mail_Test'),
     path('deals/notification/', wishlist, name='wishlist'),

@@ -138,3 +138,40 @@ def sell_product(request):
         sell_object.append(temp_obj)
 
     return render(request,"sell_product_list.html",{"owner_products": sell_object})
+
+
+#View orders
+def view_Orders(request):
+    context = request.session.get('context', {})
+
+    if request.method == "POST":
+        button_value = request.POST.get("submit_button")
+        product_id = request.POST.get(f"product_id_{button_value}")
+        order_id = request.POST.get(f"order_id_{button_value}")
+        product = creationData.objects.filter(product_id=product_id)
+        user_email = CustomUser.objects.get(unique_key= product[0].owner_id).user
+        buy_product = BuyModel.objects.filter(order_id= order_id)[0]
+        userContext = {
+            "email": user_email,
+            "flag": buy_product.updatedByOwner,
+            "updated_price": buy_product.updated_price,
+            "fromOrder": True
+        }
+        return render(request,"buy_screen.html", {"selectedData": product, "userContext": userContext})
+
+    logged_in_user_order = BuyModel.objects.filter(bider_id= context["uuid"])
+    order_object = []
+    for order in logged_in_user_order:
+        product_details = creationData.objects.filter(product_id = order.product_id)
+        temp_obj = {
+            "id": str(product_details[0].product_id),
+            "name": product_details[0].name,
+            "desc": product_details[0].description,
+            "image": product_details[0].image,
+            "actionByOwner": order.updatedByOwner,
+            "order_id": order.order_id
+        }
+        print("order.order_id ", order.order_id)
+        order_object.append(temp_obj)
+
+    return render(request,"order.html",{"logged_in_user_order": order_object})

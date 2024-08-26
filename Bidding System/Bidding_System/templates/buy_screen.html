@@ -64,13 +64,19 @@
                     </div>
                     <div class="col">
                         <label for="text" class="">Your Price</label>
-                        <input type="number" class="form-control" name="updatedPrice" id="updatedPrice"
-                            value="{{ selectedData.0.price }}">
+                        <input type="number" class="form-control" name="updatedPrice" id="updatedPrice" value={% if userContext.flag %} {{userContext.updated_price}} {% else %} {{ selectedData.0.price }}
+                            {% endif %}>
                     </div>
                 </div>
             </div>
             <!-- <a href="{% url 'send_mail_Test' %}">send</a> -->
+            {% if userContext.flag %}
+            <button type="submit" class="btn btn-info mt-3 px-5" hidden>Bid</button>
+            <button type="submit" class="btn btn-success mt-3 px-5">Confirm And Buy</button>
+            {% else %}
             <button type="submit" class="btn btn-info mt-3 px-5">Bid</button>
+            {% endif %}
+
         </form>
     </div>
 </body>
@@ -83,10 +89,10 @@
     }
 
     let priceInput = document.getElementById('updatedPrice');
-    
+
     if (priceInput) {
         let price = parseFloat(priceInput.value.replace(/,/g, ''));
-        
+
         if (!isNaN(price)) {
             priceInput.value = price;
         }

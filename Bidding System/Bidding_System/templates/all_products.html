@@ -29,6 +29,9 @@
                 <a href="{% url 'wishlist' %}"
                     style="font-family: serif;font-size: 20px;font-weight: 600;color: rgb(9 190 247);float: right;border-radius: 6px;background-color: #cdf106;"
                     class="border p-1">Wishlist</a>
+                <a href="{% url 'view_Orders' %}"
+                    style="font-family: serif;font-size: 20px;font-weight: 600;color: white;float: right;border-radius: 6px;background-color: cornflowerblue;"
+                    class="border p-1 mr-3">Order</a>
 
             </div>
 
@@ -190,7 +193,7 @@
 
         priceElements.forEach(function (element) {
             const price = parseFloat(element.textContent);
-            if (!isNaN(price)) { 
+            if (!isNaN(price)) {
                 element.textContent = formatPrice(price);
             }
         });
