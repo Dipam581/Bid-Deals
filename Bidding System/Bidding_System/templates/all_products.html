@@ -76,7 +76,7 @@
                                 <th scope="row">{{ forloop.counter }}</th>
                                 <td style="font-family: serif;font-size: 18px;">{{ product.name }}</td>
                                 <td style="font-family: serif;font-size: 18px;">{{ product.description }}</td>
-                                <td style="font-family: serif;font-size: 18px;">{{ product.price }}</td>
+                                <td style="font-family: serif;font-size: 18px;" id="price-cell">{{ product.price }}</td>
                                 <td>
                                     <img src="{{ product.image.url }}" alt="{{ product.name }}"
                                         style="width: fit-content; height: 200px;">
@@ -175,8 +175,25 @@
 
     document.addEventListener("DOMContentLoaded", function () {
         setTimeout(function () {
-            document.querySelector('.msg').classList.add("hide");
+            document.querySelector('.msg')?.classList?.add("hide") || "";
         }, 2000);
+    });
+
+    function formatPrice(price) {
+        let formattedPrice = price.toFixed(2);
+        formattedPrice = formattedPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return formattedPrice;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        let priceElements = document.querySelectorAll('#price-cell');
+
+        priceElements.forEach(function (element) {
+            const price = parseFloat(element.textContent);
+            if (!isNaN(price)) { 
+                element.textContent = formatPrice(price);
+            }
+        });
     });
 </script>
 

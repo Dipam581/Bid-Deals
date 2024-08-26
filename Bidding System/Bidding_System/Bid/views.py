@@ -72,9 +72,9 @@ def buy_product(request, product_id):
         owner_id = productDetails[0].owner_id
         current_price = productDetails[0].price
         updated_price = request.POST.get("updatedPrice")
-        print(owner_id," ", current_price, " ", updated_price)
-        # buyModel = BuyModel(owner_id = str(owner_id), bider_id = context["uuid"], original_price = current_price, updated_price = updated_price)
-        # buyModel.save()
+        
+        buyModel = BuyModel(owner_id = str(owner_id), bider_id = context["uuid"], original_price = current_price, updated_price = updated_price, product_id= product_id)
+        buyModel.save()
 
         owner_mail = CustomUser.objects.filter(unique_key=owner_id)[0]
         name = User.objects.get(username= owner_mail).first_name
@@ -84,9 +84,10 @@ def buy_product(request, product_id):
 
 
     product = creationData.objects.filter(product_id=product_id)
-    context = request.session.get('context', {})
+    user = CustomUser.objects.get(unique_key= product[0].owner_id)
+
     userContext = {
-        "email": context["email"]
+        "email": user.user
     }
     return render(request,"buy_screen.html", {"selectedData": product, "userContext": userContext})
 
@@ -107,3 +108,33 @@ def added_wishlist(request,product_id):
         messages.info(request, "You have already wishlisted this item")
 
     return redirect("/deals")
+
+
+#Sell product by owner
+
+def sell_product(request):
+    if request.method == "POST":
+        product_id = request.POST.get("id")
+        updatedPrice = request.POST.get("updatedPrice")
+        buyer_id = request.POST.get("buyer_id")
+        results = BuyModel.objects.filter( Q(product_id=product_id) & Q(bider_id=buyer_id))
+        results.update(updated_price= updatedPrice)
+        results.update(updatedByOwner= True)
+
+    context = request.session.get('context', {})
+    owner_products = BuyModel.objects.filter(owner_id= context["uuid"])
+    sell_object = []
+    for pro in owner_products:
+        product_details = creationData.objects.filter(product_id = pro.product_id)
+        temp_obj = {
+            "id": str(product_details[0].product_id),
+            "name": product_details[0].name,
+            "desc": product_details[0].description,
+            "image": product_details[0].image,
+            "curr_price": pro.original_price,
+            "up_price": pro.updated_price,
+            "buyer_id": pro.bider_id
+        }
+        sell_object.append(temp_obj)
+
+    return render(request,"sell_product_list.html",{"owner_products": sell_object})

@@ -69,10 +69,28 @@
                     </div>
                 </div>
             </div>
-            <a href="{% url 'send_mail_Test' %}">send</a>
+            <!-- <a href="{% url 'send_mail_Test' %}">send</a> -->
             <button type="submit" class="btn btn-info mt-3 px-5">Bid</button>
         </form>
     </div>
 </body>
+
+<script>
+    function formatPrice(price) {
+        let formattedPrice = price.toFixed(2);
+        formattedPrice = formattedPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return formattedPrice;
+    }
+
+    let priceInput = document.getElementById('updatedPrice');
+    
+    if (priceInput) {
+        let price = parseFloat(priceInput.value.replace(/,/g, ''));
+        
+        if (!isNaN(price)) {
+            priceInput.value = price;
+        }
+    }
+</script>
 
 </html>

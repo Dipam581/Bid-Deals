@@ -16,11 +16,12 @@ class creationData(models.Model):
 
 class BuyModel(models.Model):
     order_id = models.UUIDField(default=uuid.uuid4, unique=True, editable=False, primary_key=True)
+    product_id = models. CharField(default="")
     owner_id = models. CharField(default="")
     bider_id = models. CharField(default="")
     original_price = models.FloatField(default=0.0)
     updated_price = models.FloatField(default=0.0)
-    # isWishlisted = models.BooleanField(default= False)
+    updatedByOwner = models.BooleanField(default= False)
     
     def __str__(self):
         return self.order_id
