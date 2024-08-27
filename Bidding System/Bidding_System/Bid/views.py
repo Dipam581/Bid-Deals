@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
 from .models import creationData, BuyModel, NotifyAndWishlistModel
 from .utils import send_mail
 from Login.models import CustomUser
 from django.contrib.auth.models import User
 from django.db.models import Q
+import razorpay
 
 def option_of_trading(request):
     return render(request, 'option.html')
@@ -65,12 +66,8 @@ def show_all_products(request):
 
     
 # process to buy
-def buy_product(request, product_id):
+def buy_product(request, product_id = None):
     if request.method == "POST":
-        button_value = request.POST.get("confirm_button")
-        if(button_value):
-            payment_and_post_buy()
-            return
 
         context = request.session.get('context', {})
         productDetails = creationData.objects.filter(product_id = product_id)
@@ -151,18 +148,29 @@ def view_Orders(request):
 
     if request.method == "POST":
         button_value = request.POST.get("submit_button")
-        product_id = request.POST.get(f"product_id_{button_value}")
-        order_id = request.POST.get(f"order_id_{button_value}")
-        product = creationData.objects.filter(product_id=product_id)
-        user_email = CustomUser.objects.get(unique_key= product[0].owner_id).user
-        buy_product = BuyModel.objects.filter(order_id= order_id)[0]
-        userContext = {
-            "email": user_email,
-            "flag": buy_product.updatedByOwner,
-            "updated_price": buy_product.updated_price,
-            "fromOrder": True
-        }
-        return render(request,"buy_screen.html", {"selectedData": product, "userContext": userContext})
+        button_value_To_purchase = request.POST.get("confirm_button")
+
+        if(button_value):
+            product_id = request.POST.get(f"product_id_{button_value}")
+            order_id = request.POST.get(f"order_id_{button_value}")
+            product = creationData.objects.filter(product_id=product_id)
+            user_email = CustomUser.objects.get(unique_key= product[0].owner_id).user
+            buy_product = BuyModel.objects.filter(order_id= order_id)[0]
+            userContext = {
+                "email": user_email,
+                "flag": buy_product.updatedByOwner,
+                "updated_price": buy_product.updated_price,
+                "fromOrder": True
+            }
+            return render(request,"payment.html", {"selectedData": product, "userContext": userContext})
+        else:
+            updatedPrice = request.POST.get("updatedPrice")
+            amount_in_paise = int(updatedPrice) * 100
+            client = razorpay.Client(auth=("rzp_test_EhJqnkheuy4JLE", "uYC2jTPgYlcFaP9AGVqaXjgz"))
+            data = { "amount": amount_in_paise, "currency": "INR", "receipt": "order_rcptid_11" }
+            payment = client.order.create(data=data)
+            order_id = payment.get('id')
+            return render(request, "pay.html", {"order_id": order_id, "updatedPrice": updatedPrice})
 
     logged_in_user_order = BuyModel.objects.filter(bider_id= context["uuid"])
     order_object = []
@@ -176,12 +184,23 @@ def view_Orders(request):
             "actionByOwner": order.updatedByOwner,
             "order_id": order.order_id
         }
-        print("order.order_id ", order.order_id)
         order_object.append(temp_obj)
 
     return render(request,"order.html",{"logged_in_user_order": order_object})
 
 
 #Initiate payment and post buy stuffs
-def payment_and_post_buy():
-    pass
+
+def payment_and_post_buy(request):
+    if request.method == "POST":
+        client = razorpay.Client(auth=("rzp_test_EhJqnkheuy4JLE", "uYC2jTPgYlcFaP9AGVqaXjgz"))
+        data = { "amount": 100, "currency": "INR", "receipt": "order_rcptid_11" }
+        payment = client.order.create(data=data)
+        order_id = payment.get('id')  # Get the generated order_id
+
+        return render(request, "pay.html", {"order_id": order_id})
+
+    return render(request, "pay.html")
+
+    
+    

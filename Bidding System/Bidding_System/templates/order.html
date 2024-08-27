@@ -68,7 +68,7 @@
                             <input type="hidden" name="product_id_{{ forloop.counter }}" id="product_id_{{ forloop.counter }}" value="{{ product.id }}">
                             <input type="hidden" name="order_id_{{ forloop.counter }}" id="order_id_{{ forloop.counter }}" value="{{ product.order_id }}">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" {% if product.actionByOwner %} checked {% endif %}>
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" {% if product.actionByOwner %} checked {% endif %} onclick="return false;">
                             </div>
                         </td>
                         <td><button type="submit" name="submit_button" class="btn btn-outline-success" value="{{ forloop.counter }}">See</button></td>

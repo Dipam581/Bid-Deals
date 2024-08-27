@@ -13,4 +13,5 @@ urlpatterns = [
     path('send_mail/', send_mail_Test, name='send_mail_Test'),
     path('deals/notification/', wishlist, name='wishlist'),
     path('deals/wishlist/<str:product_id>/', added_wishlist, name="added_wishlist"),
+    path('proceed to payment', payment_and_post_buy, name="payment_and_post_buy"),
 ]
