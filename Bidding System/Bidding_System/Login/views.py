@@ -33,6 +33,8 @@ def register(request):
         email = request.POST.get("email")
         password = request.POST.get("password")
         try:
+            if User.objects.filter(username=email).exists():
+                return HttpResponse("Email already exists.")
             user = User.objects.create_user(email, password=password, first_name= username.split(" ")[0], last_name= username.split(" ")[1])
             user.save()
             subject = "User Creation Successful"
