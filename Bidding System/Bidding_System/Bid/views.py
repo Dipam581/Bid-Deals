@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
 from .models import creationData, BuyModel, NotifyAndWishlistModel
+from django.contrib.auth import logout
 from .utils import send_mail
 from Login.models import CustomUser
 from django.contrib.auth.models import User
@@ -10,6 +11,9 @@ import razorpay
 def option_of_trading(request):
     return render(request, 'option.html')
 
+def logout_user(request):
+    logout(request)
+    return redirect("/login")
 
 def send_mail_Test(request):
     send_mail()
@@ -41,19 +45,24 @@ def wishlist(request):
 
 def add_product_for_bid(request):
     context = request.session.get('context', {})
-    print(context["uuid"])
     if request.method == "POST":
-        item_name = request.POST.get("item")
-        item_description = request.POST.get("description")
-        item_amount = request.POST.get("amount")
-        file = request._files['file']
-        bidData = creationData(owner_id= context["uuid"], name= item_name, price= item_amount, description= item_description, image = file)
-        bidData.save()
+        if(request.POST.get("removeBid") and request.POST.get("removeBid").split("_")[0] == "removeBid"):
+            product_id = request.POST.get(f"product_id_{request.POST.get("removeBid").split("_")[1]}")
+            try:
+                creationData.objects.filter(product_id= product_id).delete()
+            except:
+                print("Exception")
+        else:
+            item_name = request.POST.get("item")
+            item_description = request.POST.get("description")
+            item_amount = request.POST.get("amount")
+            file = request._files['file']
+            bidData = creationData(owner_id= context["uuid"], name= item_name, price= item_amount, description= item_description, image = file)
+            bidData.save()
     
     owner_data = {}
     if (len(creationData.objects.filter(owner_id= context["uuid"]))):
         owner_data = creationData.objects.filter(owner_id= context["uuid"])
-        print("--> ",owner_data)
 
     return render(request, 'bid_creation.html', {'userContext': context["fullName"], 'ownerData': owner_data})
 
@@ -83,6 +92,7 @@ def buy_product(request, product_id = None):
         msg = f"Hi {name}, You have a sell request from a buyer. Please visit TradeSquare."
 
         send_mail(msg, owner_mail)
+        return redirect("/deals")
 
 
     product = creationData.objects.filter(product_id=product_id)
@@ -122,6 +132,10 @@ def sell_product(request):
         results = BuyModel.objects.filter( Q(product_id=product_id) & Q(bider_id=buyer_id))
         results.update(updated_price= updatedPrice)
         results.update(updatedByOwner= True)
+
+        bider_mail = CustomUser.objects.filter(unique_key=buyer_id)[0]
+        msg = f"Dear buyer, You have some new update on your bidded product. Please visit TradeSquare to know more!"
+        send_mail(msg, bider_mail)
 
     context = request.session.get('context', {})
     owner_products = BuyModel.objects.filter(owner_id= context["uuid"])

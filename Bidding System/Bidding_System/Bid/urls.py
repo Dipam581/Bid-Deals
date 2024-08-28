@@ -4,6 +4,7 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
+    path('logout', logout_user, name="logout_user"),
     path('option/', option_of_trading, name="option_of_trading"),
     path('addBid/', add_product_for_bid, name="add_product_for_bid"),
     path('addBid/sell_your_product', sell_product, name="sell_product"),
