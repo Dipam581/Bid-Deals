@@ -1,19 +1,11 @@
 {
-    "builds": [
-      {
-        "src": "Bidding_System/wsgi.py",
-        "use": "@vercel/python"
-      }
-    ],
-    "routes": [
-      {
+    "build": [{
+        "src": "Bidding System/Bidding_System/wsgi.py",
+        "use": "@vercel/python",
+        "config": {"maxLambdaSize": "15mb", "runtime": "python3.12"}
+    }],
+    "routes": [{
         "src": "/(.*)",
-        "dest": "Bidding_System/wsgi.py"
-      }
-    ],
-    "env": {
-      "DJANGO_SETTINGS_MODULE": "Bidding_System.settings",
-      "PYTHONUNBUFFERED": "1"
-    }
-  }
-  
+        "dest": "Bidding System/Bidding_System/wsgi.py"
+    }]
+}
