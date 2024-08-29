@@ -7,6 +7,9 @@ from Bid.utils import send_mail
 
 
 
+def call_function(request):
+    return redirect("/login")
+
 def initiate_login(request):
     if request.method == "POST":
         email = request.POST.get("email")
