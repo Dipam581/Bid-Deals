@@ -17,12 +17,6 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-
-
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -153,13 +147,7 @@ STATICFILES_DIRS = (
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-cloudinary.config( 
-    cloud_name = "dvkwhr1bx", 
-    api_key = "839791265795498", 
-    api_secret = "mristT0hxVZwjbYr-jvdg6pudlE",
-) 
+ 
 
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
